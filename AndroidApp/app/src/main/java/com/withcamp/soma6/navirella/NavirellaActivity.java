@@ -17,24 +17,26 @@ public class NavirellaActivity extends AppCompatActivity {
         final Button btn_findstart = (Button) findViewById(R.id.btn_findstart);
         final Button btn_findend = (Button) findViewById(R.id.btn_findend);
         final TextView textview_startpoint = (TextView) findViewById(R.id.textview_startpoint);
-        final GpsInfo gps = new GpsInfo(NavirellaActivity.this);
+        final TextView textview_endpoint = (TextView) findViewById(R.id.textview_endpoint);
+        final Intent intent = new Intent(NavirellaActivity.this, SearchActivity.class);
 
         btn_findstart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double latitude = gps.getLatitude();
-                double longitude = gps.getLongitude();
-                textview_startpoint.setText(String.valueOf(latitude) + " / " + String.valueOf(longitude));
+                intent.putExtra("tag", 1);
+                startActivity(intent);
             }
         });
 
         btn_findend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NavirellaActivity.this, SearchActivity.class);
+                intent.putExtra("tag", 2);
                 startActivity(intent);
-                finish();
             }
         });
+
+        textview_startpoint.setText(PointFactory.getStart_latitude() + " / " + PointFactory.getStart_longitude());
+        textview_endpoint.setText(PointFactory.getEnd_latitude() + " / " + PointFactory.getEnd_longitude());
     }
 }
