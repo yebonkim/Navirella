@@ -58,7 +58,8 @@ public class NavirellaActivity extends AppCompatActivity {
         btn_findPath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigation.testAction(index);
+                int command = navigation.testAction(index);
+                
                 index++;
             }
         });

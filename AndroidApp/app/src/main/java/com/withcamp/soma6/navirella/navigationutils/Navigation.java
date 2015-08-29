@@ -27,11 +27,11 @@ import java.util.List;
 public class Navigation {
 
     private static final String TAG = "NavigationUtil";
-    private static final int ACTION_STRAIGHT = 11;
-    private static final int ACTION_LEFT = 12;
-    private static final int ACTION_RIGHT = 13;
-    private static final int ACTION_ARRIVED = 201;
-    private static final int ACTION_START = 200;
+    public static final int ACTION_STRAIGHT = 11;
+    public static final int ACTION_LEFT = 12;
+    public static final int ACTION_RIGHT = 13;
+    public static final int ACTION_ARRIVED = 201;
+    public static final int ACTION_START = 200;
 
     private static Point startPoint;
     private static Point curTargetPoint;
@@ -118,7 +118,7 @@ public class Navigation {
      * @param longitude
      * @param latitude
      */
-    public static void checkCurrentLocation (double longitude, double latitude, double dd) {
+    public static int checkCurrentLocation (double longitude, double latitude, double dd) {
 
         if (currentType == ACTION_START) {
             // 출발
@@ -126,14 +126,13 @@ public class Navigation {
             currentType = ACTION_STRAIGHT;
             pathInfo.addPointIndex();
             setCurTargetPoint(pathInfo.getCurTargetPoint());
-            sendCommandToUmbrella(currentType);
-            return;
+            return sendCommandToUmbrella(currentType);
+
         }
         else if (currentType == ACTION_ARRIVED) {
             // 도착
             Log.i(TAG, "gogo: FIN");
-            sendCommandToUmbrella(currentType);
-            return;
+            return sendCommandToUmbrella(currentType);
         }
 
         else {
@@ -161,30 +160,32 @@ public class Navigation {
                     // 직진 도중. 계속 직진
                 }
             }
-            sendCommandToUmbrella(currentType);
+            return sendCommandToUmbrella(currentType);
         }
     }
 
-    public static void testAction(int index) {
+    public static int testAction(int index) {
         switch(index) {
             case 0:
-                checkCurrentLocation(0.0, 0.0, 10); break; // 시작
+                return checkCurrentLocation(0.0, 0.0, 10);  // 시작
             case 1:
-                checkCurrentLocation(0.0, 0.0, 6); break; // 직진
+                return checkCurrentLocation(0.0, 0.0, 6);  // 직진
             case 2:
-                checkCurrentLocation(0.0, 0.0, 4); break; // 턴
+                return checkCurrentLocation(0.0, 0.0, 4);  // 턴
             case 3:
-                checkCurrentLocation(0.0, 0.0, 6); break; // 직진
+                return checkCurrentLocation(0.0, 0.0, 6);  // 직진
             case 4:
-                checkCurrentLocation(0.0, 0.0, 3); break; // 턴
+                return checkCurrentLocation(0.0, 0.0, 3);  // 턴
             case 5:
-                checkCurrentLocation(0.0, 0.0, 6); break; // 직진
+                return checkCurrentLocation(0.0, 0.0, 6);   // 직진
             case 6:
-                checkCurrentLocation(0.0, 0.0, 3); break; // 도착
+                return checkCurrentLocation(0.0, 0.0, 3);   // 도착
+            default:
+                return 0;
         }
     }
 
-    public static void sendCommandToUmbrella(int action) {
+    public static int sendCommandToUmbrella(int action) {
         switch (action) {
             case ACTION_STRAIGHT:
                 Log.i(TAG, "gogo: go straight");
@@ -202,6 +203,7 @@ public class Navigation {
                 Log.e(TAG, "Wrong Command");
                 break;
         }
+        return action;
     }
 
     class NavigationTask extends AsyncTask<Double, Void, String> {
