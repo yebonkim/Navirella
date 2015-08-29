@@ -16,7 +16,7 @@ import android.support.v7.app.AlertDialog;
 /**
  * Created by Jiyoung on 2015-07-10.
  */
-public class GpsInfo extends Service implements LocationListener {
+public class    GpsInfo extends Service implements LocationListener {
 
     private final Context mContext;
 
