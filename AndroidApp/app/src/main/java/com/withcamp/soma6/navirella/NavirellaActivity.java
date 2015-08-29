@@ -1,5 +1,6 @@
 package com.withcamp.soma6.navirella;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,6 +15,7 @@ public class NavirellaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navirella);
 
         final Button btn_findstart = (Button) findViewById(R.id.btn_findstart);
+        final Button btn_findend = (Button) findViewById(R.id.btn_findend);
         final TextView textview_startpoint = (TextView) findViewById(R.id.textview_startpoint);
         final GpsInfo gps = new GpsInfo(NavirellaActivity.this);
 
@@ -23,6 +25,15 @@ public class NavirellaActivity extends AppCompatActivity {
                 double latitude = gps.getLatitude();
                 double longitude = gps.getLongitude();
                 textview_startpoint.setText(String.valueOf(latitude) + " / " + String.valueOf(longitude));
+            }
+        });
+
+        btn_findend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NavirellaActivity.this, SearchActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

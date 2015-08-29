@@ -24,8 +24,8 @@
             android:label="@string/title_activity_navirella" >
         </activity>
         <activity
-            android:name=".FindLocationActivity"
-            android:label="@string/title_activity_find_location" >
+            android:name=".SearchActivity"
+            android:label="@string/title_activity_search" >
         </activity>
     </application>
 
