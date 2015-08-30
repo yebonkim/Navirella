@@ -50,8 +50,9 @@ public class NavirellaActivity extends AppCompatActivity implements MapView.MapV
         final Button btn_findPath = (Button) findViewById(R.id.btn_findpath);
 
         final TextView textview_startpoint = (TextView) findViewById(R.id.textview_startpoint);
-        final TextView textView_endpoint = (TextView) findViewById(R.id.textview_endpoint);
-        final GpsInfo gps = new GpsInfo(NavirellaActivity.this);
+
+        final TextView textview_endpoint = (TextView) findViewById(R.id.textview_endpoint);
+        final Intent intent = new Intent(NavirellaActivity.this, SearchActivity.class);
 
         mHandler = new Handler() {
 
@@ -75,6 +76,7 @@ public class NavirellaActivity extends AppCompatActivity implements MapView.MapV
         btn_findstart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
                 double latitude = gps.getLatitude();
                 double longitude = gps.getLongitude();
                // textview_startpoint.setText(String.valueOf(latitude) + " / " + String.valueOf(longitude));
@@ -82,12 +84,17 @@ public class NavirellaActivity extends AppCompatActivity implements MapView.MapV
                 // latitude랑 longitude에 값이 들어오면
                 // navigation.setStartPoint(longitude, latitude);
                 navigation.setStartPoint(127.045345, 37.507912697052184);
+=======
+                intent.putExtra("tag", 1);
+                startActivity(intent);
+>>>>>>> 2a7c9ac492ffe737896c4e4d57e126e159890e1e
             }
         });
         // 도착지 설정
         btn_findend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
 
                 // latitude랑 longitude에 값이 들어오면
                // navigation.setEndPoint(longitude, latitude);
@@ -240,5 +247,14 @@ public class NavirellaActivity extends AppCompatActivity implements MapView.MapV
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
 
+=======
+                intent.putExtra("tag", 2);
+                startActivity(intent);
+            }
+        });
+
+        textview_startpoint.setText(PointFactory.getStart_latitude() + " / " + PointFactory.getStart_longitude());
+        textview_endpoint.setText(PointFactory.getEnd_latitude() + " / " + PointFactory.getEnd_longitude());
+>>>>>>> 2a7c9ac492ffe737896c4e4d57e126e159890e1e
     }
 }

@@ -1,6 +1,7 @@
 package com.withcamp.soma6.navirella;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.daum.mf.map.api.CalloutBalloonAdapter;
+import net.daum.mf.map.api.CameraPosition;
 import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -34,14 +36,17 @@ public class SearchActivity extends FragmentActivity implements MapView.MapViewE
     private MapView mMapView;
     private EditText mEditTextQuery;
     private Button mButtonSearch;
+    private Button mButtonGps;
     private HashMap<Integer, Item> mTagItemMap = new HashMap<Integer, Item>();
+    private GpsInfo gps;
+    private CameraPosition cameraPosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        mMapView = (MapView)findViewById(R.id.map_view);
+        mMapView = (MapView) findViewById(R.id.map_view);
         mMapView.setDaumMapApiKey(MapApiConst.DAUM_MAPS_ANDROID_APP_API_KEY);
         mMapView.setMapViewEventListener(this);
         mMapView.setPOIItemEventListener(this);
@@ -81,36 +86,63 @@ public class SearchActivity extends FragmentActivity implements MapView.MapViewE
                 });
             }
         });
+
+        mButtonGps = (Button) findViewById(R.id.buttonGps);
+        mButtonGps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                gps = new GpsInfo(SearchActivity.this);
+                Intent intent = getIntent();
+                int tag = intent.getExtras().getInt("tag");
+
+                switch (tag){
+                    case 1:
+                        PointFactory.setStart_latitude(gps.getLatitude());
+                        PointFactory.setStart_longitude(gps.getLongitude());
+                        break;
+                    case 2:
+                        PointFactory.setEnd_latitude(gps.getLatitude());
+                        PointFactory.setEnd_longitude(gps.getLongitude());
+                        break;
+                }
+
+                intent = new Intent(SearchActivity.this, NavirellaActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
-    class CustomCalloutBalloonAdapter implements CalloutBalloonAdapter {
+        class CustomCalloutBalloonAdapter implements CalloutBalloonAdapter {
 
-        private final View mCalloutBalloon;
+            private final View mCalloutBalloon;
 
-        public CustomCalloutBalloonAdapter() {
-            mCalloutBalloon = getLayoutInflater().inflate(R.layout.custom_callout_balloon, null);
+            public CustomCalloutBalloonAdapter() {
+                mCalloutBalloon = getLayoutInflater().inflate(R.layout.custom_callout_balloon, null);
+            }
+
+            @Override
+            public View getCalloutBalloon(MapPOIItem poiItem) {
+                if (poiItem == null) return null;
+                Item item = mTagItemMap.get(poiItem.getTag());
+                if (item == null) return null;
+                ImageView imageViewBadge = (ImageView) mCalloutBalloon.findViewById(R.id.badge);
+                TextView textViewTitle = (TextView) mCalloutBalloon.findViewById(R.id.title);
+                textViewTitle.setText(item.title);
+                TextView textViewDesc = (TextView) mCalloutBalloon.findViewById(R.id.desc);
+                textViewDesc.setText(item.address);
+                imageViewBadge.setImageDrawable(createDrawableFromUrl(item.imageUrl));
+                return mCalloutBalloon;
+            }
+
+            @Override
+            public View getPressedCalloutBalloon(MapPOIItem poiItem) {
+                return null;
+            }
+
         }
 
-        @Override
-        public View getCalloutBalloon(MapPOIItem poiItem) {
-            if (poiItem == null) return null;
-            Item item = mTagItemMap.get(poiItem.getTag());
-            if (item == null) return null;
-            ImageView imageViewBadge = (ImageView) mCalloutBalloon.findViewById(R.id.badge);
-            TextView textViewTitle = (TextView) mCalloutBalloon.findViewById(R.id.title);
-            textViewTitle.setText(item.title);
-            TextView textViewDesc = (TextView) mCalloutBalloon.findViewById(R.id.desc);
-            textViewDesc.setText(item.address);
-            imageViewBadge.setImageDrawable(createDrawableFromUrl(item.imageUrl));
-            return mCalloutBalloon;
-        }
-
-        @Override
-        public View getPressedCalloutBalloon(MapPOIItem poiItem) {
-            return null;
-        }
-
-    }
 
     private void hideSoftKeyboard() {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -138,7 +170,7 @@ public class SearchActivity extends FragmentActivity implements MapView.MapViewE
 
             @Override
             public void onFail() {
-                showToast("API_KEY의 제한 트래픽이 초과되었습니다.");
+
             }
         });
     }
@@ -206,19 +238,28 @@ public class SearchActivity extends FragmentActivity implements MapView.MapViewE
     @Override
     public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
         Item item = mTagItemMap.get(mapPOIItem.getTag());
-        StringBuilder sb = new StringBuilder();
-        sb.append("title=").append(item.title).append("\n");
-        sb.append("imageUrl=").append(item.imageUrl).append("\n");
-        sb.append("address=").append(item.address).append("\n");
-        sb.append("newAddress=").append(item.newAddress).append("\n");
-        sb.append("zipcode=").append(item.zipcode).append("\n");
-        sb.append("phone=").append(item.phone).append("\n");
-        sb.append("category=").append(item.category).append("\n");
-        sb.append("longitude=").append(item.longitude).append("\n");
-        sb.append("latitude=").append(item.latitude).append("\n");
-        sb.append("distance=").append(item.distance).append("\n");
-        sb.append("direction=").append(item.direction).append("\n");
-        Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
+
+        Log.e("item1 : ", String.valueOf(item.latitude));
+        Log.e("item2 : ", String.valueOf(item.longitude));
+
+        Intent intent = getIntent();
+        int tag = intent.getExtras().getInt("tag");
+
+        switch (tag){
+            case 1:
+                PointFactory.setStart_latitude(item.latitude);
+                PointFactory.setStart_longitude(item.longitude);
+                break;
+            case 2:
+                PointFactory.setEnd_latitude(item.latitude);
+                PointFactory.setEnd_longitude(item.longitude);
+                break;
+        }
+
+        intent = new Intent(SearchActivity.this, NavirellaActivity.class);
+        startActivity(intent);
+        finish();
+
     }
 
     @Override

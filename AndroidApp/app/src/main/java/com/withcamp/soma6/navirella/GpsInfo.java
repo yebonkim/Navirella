@@ -1,16 +1,17 @@
 package com.withcamp.soma6.navirella;
 
-import android.location.LocationListener;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
 
 /**
@@ -33,8 +34,8 @@ public class    GpsInfo extends Service implements LocationListener {
     double lat; // 위도
     double lon; // 경도
 
-    // GPS 정보 업데이트 거리 10미터
-    private static final long MIN_DISTANCE_UPDATES = 10;
+    // GPS 정보 업데이트 거리 3미터
+    private static final long MIN_DISTANCE_UPDATES = 3;
 
     // GPS 정보 업데이트 시간 1/1000
     private static final long MIN_TIME_UPDATES = 1000 * 10;  // 최소 업데이트 시간 : 10초
@@ -73,25 +74,35 @@ public class    GpsInfo extends Service implements LocationListener {
                             // 위도 경도 저장
                             lat = location.getLatitude();
                             lon = location.getLongitude();
+
+
+                            Log.e("1. lat : ", String.valueOf(lat));
+                            Log.e("1. lon : ", String.valueOf(lon));
+
                         }
                     }
                 }
 
                 if (isGPSEnabled) {
-                    if (location == null) {
-                        locationManager
-                                .requestLocationUpdates(
-                                        LocationManager.GPS_PROVIDER,
-                                        MIN_TIME_UPDATES,
-                                        MIN_DISTANCE_UPDATES,
-                                        this);
-                        if (locationManager != null) {
-                            location = locationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            if (location != null) {
-                                lat = location.getLatitude();
-                                lon = location.getLongitude();
-                            }
+                    locationManager
+                            .requestLocationUpdates(
+                                    LocationManager.GPS_PROVIDER,
+                                    MIN_TIME_UPDATES,
+                                    MIN_DISTANCE_UPDATES,
+                                    this);
+                    lat = location.getLatitude();
+                    lon = location.getLongitude();
+
+                    if (locationManager != null) {
+                        location = locationManager
+                                .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        if (location != null) {
+                            lat = location.getLatitude();
+                            lon = location.getLongitude();
+
+
+                            Log.e("2. lat : ", String.valueOf(lat));
+                            Log.e("1. lon : ", String.valueOf(lon));
                         }
                     }
                 }
@@ -196,4 +207,6 @@ public class    GpsInfo extends Service implements LocationListener {
         // TODO Auto-generated method stub
 
     }
+
+
 }
