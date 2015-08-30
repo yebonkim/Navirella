@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/jiyoungpark/Desktop/AndroidApp/app/libs/libDaumMapEngine.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="49fb30534b210fb4381ec1a563756b6c774ae5a8">
+        <dex dex="/Users/jiyoungpark/Desktop/AndroidApp/app/build/intermediates/pre-dexed/debug/libDaumMapEngine-6cb25f2e99f7024dd82a059775909945dedbb86f.jar" />
+    </item>
+
+</items>
