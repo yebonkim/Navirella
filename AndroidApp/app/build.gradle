@@ -29,7 +29,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile files('libs/commons-codec-1.9.jar')
     compile files('libs/commons-logging-1.2.jar')
@@ -40,4 +39,6 @@ dependencies {
     compile files('libs/httpmime-4.5.jar')
     compile files('libs/jna-4.1.0.jar')
     compile files('libs/jna-platform-4.1.0.jar')
+    compile files('libs/libDaumMapAndroid.jar')
+    compile files('libs/libDaumMapEngine.jar')
 }

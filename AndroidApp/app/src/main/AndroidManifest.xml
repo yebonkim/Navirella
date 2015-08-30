@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -24,9 +26,10 @@
             android:label="@string/title_activity_navirella" >
         </activity>
         <activity
-            android:name=".FindLocationActivity"
-            android:label="@string/title_activity_find_location" >
+            android:name=".SearchActivity"
+            android:label="@string/title_activity_search" >
         </activity>
+        <activity android:name="com.withcamp.soma6.navirella.DeviceListActivity"></activity>
     </application>
 
 </manifest>

@@ -109,6 +109,14 @@ public class Navigation {
         return Math.sqrt(Math.pow(Math.abs(curPoint.getLongitude()-curTargetPoint.getLongitude()), 2) + Math.pow(Math.abs(curPoint.getLatitude() - curTargetPoint.getLatitude()), 2));
     }
 
+    // 현재 경로의 좌표 리스트 불러오기
+    public List<Point> getPointList() {
+        List<Point> list = new ArrayList<Point>();
+        for(int i=0; i<pathInfo.getPointIndexNum(); i++) {
+            list.add(i, pathInfo.getPointbyIndex(i));
+        }
+        return list;
+    }
     /***
      * 현재 위치의 상태 확인
      * 출발 / 직진 경로 / 회전 포인트 근접

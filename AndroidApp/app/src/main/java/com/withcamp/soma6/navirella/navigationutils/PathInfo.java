@@ -42,4 +42,8 @@ public class PathInfo {
     public Point getCurTargetPoint() {
         return pointArray.get(pointIndex);
     }
+
+    public Point getPointbyIndex(int i) {
+        return pointArray.get(i);
+    }
 }

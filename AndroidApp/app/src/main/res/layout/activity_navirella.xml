@@ -71,10 +71,11 @@
                 android:textColor="#FFFFFF"/>
         </LinearLayout>
 
-        <LinearLayout
+        <net.daum.mf.map.api.MapView
+            android:id="@+id/map_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="7">
-        </LinearLayout>
+        </net.daum.mf.map.api.MapView>
     </LinearLayout>
 </LinearLayout>
