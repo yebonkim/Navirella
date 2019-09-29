@@ -1,0 +1,7 @@
+// os
+.DS_Store
+
+// android
+*.idea
+*.iml
+*local.properties
